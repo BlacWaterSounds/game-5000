@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: lightblue;
+        }
+        #bouncingSmiley {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: bounce 0.5s infinite alternate;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        transform: translate(-50%, -70%);
+    }
+}
+    </style>
+</head> 
+<body>
+<h1>Quiz Game</h1>
+
+<div id="questions">
+    <label for="name">What is your name? </label>
+    <input type="text" id="nameInput">
+    <button onclick="startQuiz()">Start</button>
+</div>
+
+<div id="quiz" style="display: none;">
+    <h2 id="greeting"></h2>
+    <div id="question1" style="display: none;">
+        <label for="answer1">What does PoE stand for? </label>
+        <input type="text" id="answer1Input">
+        <button onclick="checkAnswer(1, 'Power over Ethernet')">Submit</button>
+    </div>
+
+    <div id="question2" style="display: none;">
+        <label for="answer2">What does VoIP stand for? </label>
+        <input type="text" id="answer2Input">
+        <button onclick="checkAnswer(2, 'Voice over IP')">Submit</button>
+    </div>
+
+    <div id="question3" style="display: none;">
+        <label for="answer3">A cable used to connect two like devices without a distribution device? </label>
+        <input type="text" id="answer3Input">
+        <button onclick="checkAnswer(3, 'crossover cable')">Submit</button>
+    </div>
+
+    <h3 id="result" style="display: none;"></h3>
+</div>
+
+<script>
+    let sscore = 0;
+    let currentQuestion = 1;
+
+    function startQuiz() {
+        const nameInput = document.getElementById('nameInput');
+        const greeting = document.getElementById('greeting');
+
+        greeting.textContent = 'Hello, ' + nameInput.value;
+        document.getElementById('questions').style.display = 'none';
+        document.getElementById('quiz').style.display = 'block';
+        document.getElementById('question' + currentQuestion).style.display = 'block';
+    }
+
+    function checkAnswer(questionNumber, correctAnswer) {
+        const answerInput = document.getElementById('answer' + questionNumber + 'Input');
+        const result = document.getElementById('result');
+
+        if (answerInput.value === correctAnswer) {
+            sscore += 1;
+        }
+
+        document.getElementById('question' + questionNumber).style.display = 'none';
+        
+        if(questionNumber < 3){
+            currentQuestion++;
+            document.getElementById('question' + currentQuestion).style.display = 'block';
+        }
+        else{
+            document.getElementById('result').textContent = 'Thank you for playing the game! Your score is ' + sscore + ' out of 3';
+            result.style.display = 'block';
+        }
+        if (sscore === 3) { // Check if all three answers are correct
+            document.getElementById('quiz').appendChild(createBouncingSmiley());
+        }
+
+        result.style.display = 'block';
+    }
+
+
+function createBouncingSmiley() {
+    const smiley = document.createElement('img');
+    smiley.setAttribute('src', 'bitmapbwsmile1.PNG');
+    smiley.setAttribute('id', 'bouncingSmiley');
+    return smiley;
+}
+    
+</script>
+</body>
+</html>
